@@ -1,5 +1,7 @@
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const {UserInputError} = require('apollo-server')
+
 //import user mongoose model
 const {SECRET_KEY} = require('../../config')
 const User = require('../../models/User')
@@ -9,11 +11,19 @@ module.exports = {
         async register(_,
             {
                 registerInput:{username, email, password, confirmPassword}
-            },
-            context,info){
+            }
+            ){
             //TODO validate user data 
             //TODO make sure user doesn't already exist
-            
+            const user = User.findOne({username})
+            //console.log(`user is ${user}`)
+            if(user){
+                throw new UserInputError('Username is taken',{
+                    errors: {
+                        username: 'This username is taken'
+                    }
+                })
+            }
             //hash password and create auth token
             password = await bcrypt.hash(password,12)
 
