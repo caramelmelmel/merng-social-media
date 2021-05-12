@@ -15,15 +15,14 @@ module.exports = {
             ){
             //TODO validate user data 
             //TODO make sure user doesn't already exist
-            const user = User.findOne({username})
-            //console.log(`user is ${user}`)
-            if(user){
-                throw new UserInputError('Username is taken',{
+            const user = await User.findOne({ username });
+            if (user) {
+                throw new UserInputError('Username is taken', {
                     errors: {
                         username: 'This username is taken'
                     }
-                })
-            }
+        });
+        }
             //hash password and create auth token
             password = await bcrypt.hash(password,12)
 
