@@ -10,11 +10,19 @@ module.exports.validateRegisterInput = (
     if(username.trim() === ''){
         errors.username = 'Username must not be empty'
     }
+
     //check password
     if(password.trim() === ''){
         errors.password = 'Password must not be empty'
     }else if(password != confirmPassword){
         errors.confirmPassword = 'Passwords must match'
+    }else if(password.length < 8){
+        errors.password = 'Password length must be more than 8'
+    }else if(password){
+       const regexPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/
+       if(!password.match(regexPassword)){
+           errors.password = 'Invalid password'
+       }
     }
 
     //check email

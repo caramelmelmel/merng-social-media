@@ -31,7 +31,6 @@ module.exports = {
 
             //check user in db 
             const user = await User.findOne({username})
-            console.log('does user exist?')
 
             if(!user) {
                 errors.general = 'User not found'
