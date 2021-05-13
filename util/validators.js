@@ -24,7 +24,7 @@ module.exports.validateRegisterInput = (
            errors.password = 'Invalid password'
        }
     }
-
+    
     //check email
     if(email.trim() === ''){
         errors.email = 'Email must not be empty'
