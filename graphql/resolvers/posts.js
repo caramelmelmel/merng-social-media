@@ -1,4 +1,5 @@
-const {AuthenticationError} = require('apollo-server')
+const {AuthenticationError} = require('apollo-server');
+const { UniqueFragmentNamesRule } = require('graphql');
 
 const Post = require('../../models/Post')
 const checkAuth = require('../../util/check-auth')
@@ -25,16 +26,24 @@ module.exports = {
                 throw new Error(err)
             }
         }
-      }
+      },
 
-      /*
     Mutation: {
         async createPost(_, {body}, context){
             const user = checkAuth(context)
             console.log(user)
 
-            const newPost = new Post
+            const newPost = new Post(
+                body,
+                user: user.id,
+                username: user.username,
+                createdAt: new Date().toISOString()
+
+            )
+
+            const post = await newPost.save();
+
         }
     }
-    */
+    
 }
