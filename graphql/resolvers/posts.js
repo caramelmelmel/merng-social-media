@@ -33,7 +33,11 @@ module.exports = {
 
             //auth settled
             const user = checkAuth(context)
-            console.log(user)
+
+            //if post is empty
+            if(args.body.trim() === ''){
+                throw new Error('Post body must not be empty')
+            }
 
             const newPost = new Post({
                 body,
