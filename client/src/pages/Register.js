@@ -1,6 +1,7 @@
-import React from 'react'
-import { useState } from 'react/cjs/react.production.min'
+import React, {useState} from 'react'
 import {Button, Form} from 'semantic-ui-react'
+import { useMutation } from '@apollo/react-hooks'
+import gql from 'graphql-tag'
 
 function Register() {
 
@@ -16,18 +17,29 @@ function Register() {
         setValues({...values, [event.target.name]: event.target.value})
     }
 
+    const[addUser, {loading}] = useMutation(REGISTER_USER,{
+        update(proxy, result){
+        console.log(result)
+        },
+        //give variables of mutation
+        variables: values
+    })
+
     const onSubmit = (event)=>{
         event.preventDefault();
-        
+        addUser();
     }
+
+
     return(
-        <div>
-            <Form onSubmit={onSubmit} noValidate>
+        <div className="form-container">
+            <Form onSubmit={onSubmit} noValidate className={loading ? "loading" : ""}>
                 <h1>Register</h1>
                 <Form.Input
                 label="Username"
                 placeholder="Username.."
                 name="username"
+                type="text"
                 value={values.username}
                 onChange={onChange}
                 />
@@ -35,6 +47,7 @@ function Register() {
                 label="Email"
                 placeholder="Email.."
                 name="email"
+                type="email"
                 value={values.email}
                 onChange={onChange}
                 />
@@ -42,13 +55,15 @@ function Register() {
                 label="Password"
                 placeholder="Password.."
                 name="password"
-                value={values.username}
+                type="password"
+                value={values.password}
                 onChange={onChange}
                 />
                 <Form.Input
                 label=" Confirm Password"
                 placeholder=" Confirm Password.."
                 name="confirmPassword"
+                type="password"
                 value={values.confirmPassword}
                 onChange={onChange}
                 />
@@ -59,5 +74,29 @@ function Register() {
         </div>
     )
 }
+
+//graphql mutation server side validation
+const REGISTER_USER = gql`
+    mutation register(
+        $username: String!
+        $email: String!
+        $password: String!
+        $confirmPassword: String!
+    ){
+        register(
+            registerInput:{
+                username: $username
+                email: $email
+                password: $password
+                confirmPassword: $confirmPassword
+            }
+        ){
+            id
+            email
+            username
+            createdAt
+            token
+        }
+    }`
 
 export default Register
