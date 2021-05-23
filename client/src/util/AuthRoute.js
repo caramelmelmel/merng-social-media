@@ -1,5 +1,5 @@
 //Prevents login and register access to the login and register page when user is logged in
-import React, {Component, useContext} from 'react'
+import React, { useContext} from 'react'
 import { Route, Redirect } from 'react-router-dom'
 import {AuthContext } from '../context/auth'
 
