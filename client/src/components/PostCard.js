@@ -29,10 +29,8 @@ function PostCard({
       </Card.Content>
       <Card.Content extra>
       <LikeButton user={user} post={{id, likes, likeCount}}/>
-      <Popup
-        content="Comment on post"
-        inverted
-        trigger={
+      <MyPopup
+        content="Comment on post">
           <Button labelPosition='right' as={Link} to={`/posts/${id}`}>
           <Button color='blue' basic>
             <Icon name='comments' />
@@ -41,8 +39,8 @@ function PostCard({
             {commentCount}
           </Label>
         </Button>
-        }
-        />
+        </MyPopup>
+
     {user && user.username === username && <DeleteButton postId={id}/>}
       </Card.Content>
     </Card>
